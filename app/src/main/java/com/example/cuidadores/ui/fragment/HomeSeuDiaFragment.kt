@@ -33,7 +33,6 @@ class HomeSeuDiaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         setupObservers()
-        setupClickListeners()
     }
 
     private fun setupRecyclerView() {
@@ -49,12 +48,6 @@ class HomeSeuDiaFragment : Fragment() {
     private fun setupObservers() {
         viewModel.allClientes.observe(viewLifecycleOwner) { clientes ->
             adapter.submitList(clientes)
-        }
-    }
-
-    private fun setupClickListeners() {
-        binding.fabAdicionarCliente.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_patients_to_cadastroClienteFragment)
         }
     }
 

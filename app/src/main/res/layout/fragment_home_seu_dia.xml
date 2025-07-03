@@ -11,13 +11,4 @@
         android:clipToPadding="false"
         android:padding="8dp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAdicionarCliente"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:contentDescription="Adicionar novo cliente"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout> 
