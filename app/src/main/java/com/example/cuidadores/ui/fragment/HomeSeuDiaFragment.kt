@@ -9,13 +9,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cuidadores.R
-import com.example.cuidadores.databinding.FragmentListaClientesBinding
+import com.example.cuidadores.databinding.FragmentHomeSeuDiaBinding
 import com.example.cuidadores.ui.adapter.ClienteAdapter
 import com.example.cuidadores.ui.viewmodel.ClienteViewModel
 
-class ListaClientesFragment : Fragment() {
+class HomeSeuDiaFragment : Fragment() {
 
-    private var _binding: FragmentListaClientesBinding? = null
+    private var _binding: FragmentHomeSeuDiaBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ClienteViewModel by viewModels()
     private lateinit var adapter: ClienteAdapter
@@ -25,7 +25,7 @@ class ListaClientesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentListaClientesBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeSeuDiaBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -42,7 +42,7 @@ class ListaClientesFragment : Fragment() {
         }
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = this@ListaClientesFragment.adapter
+            adapter = this@HomeSeuDiaFragment.adapter
         }
     }
 

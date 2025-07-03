@@ -2,14 +2,19 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/listaClientesFragment">
+    app:startDestination="@id/navigation_home">
 
     <fragment
-        android:id="@+id/listaClientesFragment"
+        android:id="@+id/navigation_home"
+        android:name="com.example.cuidadores.ui.fragment.HomeSeuDiaFragment"
+        android:label="Seu Dia" />
+
+    <fragment
+        android:id="@+id/navigation_patients"
         android:name="com.example.cuidadores.ui.fragment.ListaClientesFragment"
         android:label="Lista de Clientes">
         <action
-            android:id="@+id/action_listaClientesFragment_to_cadastroClienteFragment"
+            android:id="@+id/action_navigation_patients_to_cadastroClienteFragment"
             app:destination="@id/cadastroClienteFragment" />
     </fragment>
 
