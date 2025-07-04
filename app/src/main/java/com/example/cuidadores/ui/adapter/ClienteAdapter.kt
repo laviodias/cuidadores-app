@@ -9,7 +9,9 @@ import com.example.cuidadores.data.model.Cliente
 import com.example.cuidadores.databinding.ItemClienteBinding
 
 class ClienteAdapter(
-    private val onItemClick: (Cliente) -> Unit
+    private val onItemClick: (Cliente) -> Unit,
+    private val onMedicamentosClick: (Cliente) -> Unit,
+    private val onDeleteClick: (Cliente) -> Unit
 ) : ListAdapter<Cliente, ClienteAdapter.ClienteViewHolder>(ClienteDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClienteViewHolder {
@@ -43,6 +45,14 @@ class ClienteAdapter(
                 textNome.text = cliente.nome
                 textTelefone.text = cliente.telefone
                 textEndereco.text = cliente.endereco
+                
+                buttonMedicamentos.setOnClickListener {
+                    onMedicamentosClick(cliente)
+                }
+                
+                buttonExcluir.setOnClickListener {
+                    onDeleteClick(cliente)
+                }
             }
         }
     }

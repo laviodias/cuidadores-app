@@ -36,9 +36,22 @@ class HomeSeuDiaFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = ClienteAdapter { cliente ->
-            // TODO: Implementar navegação para edição do cliente
-        }
+        adapter = ClienteAdapter(
+            onItemClick = { cliente ->
+                // TODO: Implementar navegação para edição do cliente
+            },
+            onMedicamentosClick = { cliente ->
+                // Navegar para a lista de medicamentos do cliente
+                val bundle = Bundle().apply {
+                    putLong("clienteId", cliente.id)
+                }
+                // Usar o ID do fragment de destino diretamente
+                findNavController().navigate(R.id.action_navigation_patients_to_listaMedicamentosFragment, bundle)
+            },
+            onDeleteClick = { cliente ->
+                confirmarExclusao(cliente)
+            }
+        )
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = this@HomeSeuDiaFragment.adapter
@@ -49,6 +62,17 @@ class HomeSeuDiaFragment : Fragment() {
         viewModel.allClientes.observe(viewLifecycleOwner) { clientes ->
             adapter.submitList(clientes)
         }
+    }
+
+    private fun confirmarExclusao(cliente: com.example.cuidadores.data.model.Cliente) {
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("Confirmar exclusão")
+            .setMessage("Deseja realmente excluir o cliente '${cliente.nome}'?")
+            .setPositiveButton("Sim") { _, _ ->
+                viewModel.delete(cliente)
+            }
+            .setNegativeButton("Não", null)
+            .show()
     }
 
     override fun onDestroyView() {

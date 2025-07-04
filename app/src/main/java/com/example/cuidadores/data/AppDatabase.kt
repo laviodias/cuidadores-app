@@ -5,11 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.cuidadores.data.dao.ClienteDao
+import com.example.cuidadores.data.dao.MedicamentoDao
 import com.example.cuidadores.data.model.Cliente
+import com.example.cuidadores.data.model.Medicamento
 
-@Database(entities = [Cliente::class], version = 1, exportSchema = false)
+@Database(entities = [Cliente::class, Medicamento::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun clienteDao(): ClienteDao
+    abstract fun medicamentoDao(): MedicamentoDao
 
     companion object {
         @Volatile
@@ -21,7 +24,8 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "cuidadores_database"
-                ).build()
+                ).fallbackToDestructiveMigration()
+                .build()
                 INSTANCE = instance
                 instance
             }

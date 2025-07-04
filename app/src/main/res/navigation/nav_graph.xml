@@ -16,11 +16,35 @@
         <action
             android:id="@+id/action_navigation_patients_to_cadastroClienteFragment"
             app:destination="@id/cadastroClienteFragment" />
+        <action
+            android:id="@+id/action_navigation_patients_to_listaMedicamentosFragment"
+            app:destination="@id/listaMedicamentosFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/cadastroClienteFragment"
         android:name="com.example.cuidadores.ui.fragment.CadastroClienteFragment"
         android:label="Cadastro de Cliente" />
+
+    <fragment
+        android:id="@+id/listaMedicamentosFragment"
+        android:name="com.example.cuidadores.ui.fragment.ListaMedicamentosFragment"
+        android:label="Medicamentos">
+        <argument
+            android:name="clienteId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_listaMedicamentosFragment_to_adicionarMedicamentoFragment"
+            app:destination="@id/adicionarMedicamentoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adicionarMedicamentoFragment"
+        android:name="com.example.cuidadores.ui.fragment.AdicionarMedicamentoFragment"
+        android:label="Adicionar Medicamento">
+        <argument
+            android:name="clienteId"
+            app:argType="long" />
+    </fragment>
 
 </navigation> 

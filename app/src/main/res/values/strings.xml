@@ -12,4 +12,5 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="title_home">Hoje</string>
     <string name="title_patients">Pacientes</string>
+    <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
 </resources>
