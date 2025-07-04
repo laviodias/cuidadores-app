@@ -39,7 +39,11 @@ class ListaClientesFragment : Fragment() {
     private fun setupRecyclerView() {
         adapter = ClienteAdapter(
             onItemClick = { cliente ->
-                // TODO: Implementar navegação para edição do cliente
+                // Navegar para o fragment de edição de cliente
+                val bundle = Bundle().apply {
+                    putLong("clienteId", cliente.id)
+                }
+                findNavController().navigate(R.id.action_navigation_patients_to_editarClienteFragment, bundle)
             },
             onMedicamentosClick = { cliente ->
                 // Navegar para a lista de medicamentos do cliente

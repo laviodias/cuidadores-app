@@ -19,12 +19,24 @@
         <action
             android:id="@+id/action_navigation_patients_to_listaMedicamentosFragment"
             app:destination="@id/listaMedicamentosFragment" />
+        <action
+            android:id="@+id/action_navigation_patients_to_editarClienteFragment"
+            app:destination="@id/editarClienteFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/cadastroClienteFragment"
         android:name="com.example.cuidadores.ui.fragment.CadastroClienteFragment"
         android:label="Cadastro de Cliente" />
+
+    <fragment
+        android:id="@+id/editarClienteFragment"
+        android:name="com.example.cuidadores.ui.fragment.EditarClienteFragment"
+        android:label="Editar Cliente">
+        <argument
+            android:name="clienteId"
+            app:argType="long" />
+    </fragment>
 
     <fragment
         android:id="@+id/listaMedicamentosFragment"

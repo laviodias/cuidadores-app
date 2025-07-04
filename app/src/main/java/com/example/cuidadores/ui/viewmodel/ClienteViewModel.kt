@@ -31,7 +31,7 @@ class ClienteViewModel(application: Application) : AndroidViewModel(application)
         repository.delete(cliente)
     }
 
-    fun getClienteById(id: Long) = viewModelScope.launch {
-        repository.getClienteById(id)
+    suspend fun getClienteById(id: Long): Cliente? {
+        return repository.getClienteById(id)
     }
 } 
