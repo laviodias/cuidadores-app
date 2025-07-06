@@ -7,7 +7,11 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.cuidadores.ui.fragment.HomeSeuDiaFragment"
-        android:label="Seu Dia" />
+        android:label="Seu Dia">
+        <action
+            android:id="@+id/action_navigation_home_to_clienteFragment"
+            app:destination="@id/clienteFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_patients"
@@ -22,5 +26,14 @@
         android:id="@+id/cadastroClienteFragment"
         android:name="com.example.cuidadores.ui.fragment.CadastroClienteFragment"
         android:label="Cadastro de Cliente" />
+
+    <fragment
+        android:id="@+id/clienteFragment"
+        android:name="com.example.cuidadores.ui.fragment.ClienteFragment"
+        android:label="Cliente">
+        <argument
+            android:name="clienteId"
+            app:argType="long" />
+    </fragment>
 
 </navigation> 

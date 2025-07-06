@@ -13,7 +13,7 @@ data class Cliente(
     val horariosAtendimento: String // JSON para horários de atendimento
 )
 
-// Classe auxiliar para horários de atendimento (mantida para compatibilidade)
+// Classe auxiliar para horários de atendimento
 data class HorarioAtendimento(
     val diaSemana: String,
     val horarioInicio: String,

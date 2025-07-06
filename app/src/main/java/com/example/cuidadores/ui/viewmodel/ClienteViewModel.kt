@@ -256,6 +256,54 @@ class ClienteViewModel(application: Application) : AndroidViewModel(application)
     }
     
     /**
+     * Retorna medicamentos de um cliente específico para uma data específica
+     * Usado na tela individual do cliente
+     */
+    fun getMedicamentosClientePorData(clienteId: Long, data: String): LiveData<List<MedicamentoAplicacao>> = 
+        MediatorLiveData<List<MedicamentoAplicacao>>().apply {
+            var medicamentos: List<Medicamento>? = null
+            var aplicacoes: List<AplicacaoReceita>? = null
+            var registros: List<RegistroAplicacao>? = null
+
+            fun update() {
+                val medicamentosData = medicamentos
+                val aplicacoesData = aplicacoes
+                val registrosData = registros
+                
+                if (medicamentosData != null && aplicacoesData != null && registrosData != null) {
+                    val medicamentosDoCliente = medicamentosData.filter { 
+                        it.clienteId == clienteId &&
+                        // Verificar se medicamento está ativo nesta data
+                        (it.dataInicio <= data) && 
+                        (it.dataFim == null || it.dataFim >= data)
+                    }
+                    
+                    // Achatar dados - cada aplicação vira um item
+                    val medicamentosAchatados = medicamentosDoCliente.flatMap { medicamento ->
+                        criarMedicamentosAchatadosPorData(medicamento, aplicacoesData, registrosData, data)
+                    }
+                    
+                    value = medicamentosAchatados
+                }
+            }
+
+            addSource(medicamentoRepository.getAllMedicamentos()) { 
+                medicamentos = it
+                update()
+            }
+            
+            addSource(aplicacaoRepository.getAllAplicacoes()) { 
+                aplicacoes = it
+                update()
+            }
+            
+            addSource(aplicacaoRepository.getAllRegistros()) { 
+                registros = it
+                update()
+            }
+        }
+    
+    /**
      * Método para criar dados de exemplo para teste
      * TODO: Remover quando tiver formulários de cadastro
      */
@@ -263,17 +311,42 @@ class ClienteViewModel(application: Application) : AndroidViewModel(application)
         try {
             val hoje = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
             
-            // 1. Criar cliente de exemplo
+            // 1. Criar cliente de exemplo - Maria Silva
+            // Resultado formatado: "Segunda a Quinta 08h às 17h30\nSexta 08h30 às 12h\nSábado 09h15 às 15h45"
             val clienteId = clienteRepository.insert(
                 Cliente(
                     nome = "Maria Silva",
                     telefone = "(11) 98765-4321",
                     endereco = "Rua das Flores, 123",
-                    horariosAtendimento = """[{"diaSemana": "Segunda", "horarioInicio": "08:00", "horarioFim": "17:00"}]"""
+                    horariosAtendimento = """[
+                        {"diaSemana": "Segunda", "horarioInicio": "08:00", "horarioFim": "17:30"},
+                        {"diaSemana": "Terça", "horarioInicio": "08:00", "horarioFim": "17:30"},
+                        {"diaSemana": "Quarta", "horarioInicio": "08:00", "horarioFim": "17:30"},
+                        {"diaSemana": "Quinta", "horarioInicio": "08:00", "horarioFim": "17:30"},
+                        {"diaSemana": "Sexta", "horarioInicio": "08:30", "horarioFim": "12:00"},
+                        {"diaSemana": "Sábado", "horarioInicio": "09:15", "horarioFim": "15:45"}
+                    ]"""
                 )
             )
             
-            // 2. Criar medicamentos
+            // 2. Criar segundo cliente de exemplo - João Santos
+            // Resultado formatado: "Segunda e Quinta 07h30 às 11h30\nSegunda e Quinta 13h às 17h\nDomingo 08h às 12h"
+            val clienteId2 = clienteRepository.insert(
+                Cliente(
+                    nome = "João Santos",
+                    telefone = "(11) 98888-7777",
+                    endereco = "Av. Paulista, 456",
+                    horariosAtendimento = """[
+                        {"diaSemana": "Segunda", "horarioInicio": "07:30", "horarioFim": "11:30"},
+                        {"diaSemana": "Segunda", "horarioInicio": "13:00", "horarioFim": "17:00"},
+                        {"diaSemana": "Quinta", "horarioInicio": "07:30", "horarioFim": "11:30"},
+                        {"diaSemana": "Quinta", "horarioInicio": "13:00", "horarioFim": "17:00"},
+                        {"diaSemana": "Domingo", "horarioInicio": "08:00", "horarioFim": "12:00"}
+                    ]"""
+                )
+            )
+            
+            // 3. Criar medicamentos
             val paracetamolId = medicamentoRepository.insert(
                 Medicamento(
                     clienteId = clienteId,
@@ -296,7 +369,7 @@ class ClienteViewModel(application: Application) : AndroidViewModel(application)
                 )
             )
             
-            // 3. Criar aplicações da receita
+            // 4. Criar aplicações da receita
             val aplicacao1Id = aplicacaoRepository.insertAplicacaoReceita(
                 AplicacaoReceita(
                     medicamentoId = paracetamolId,
@@ -321,7 +394,7 @@ class ClienteViewModel(application: Application) : AndroidViewModel(application)
                 )
             )
             
-            // 4. Criar apenas ALGUNS registros para demonstrar diferentes status
+            // 5. Criar apenas ALGUNS registros para demonstrar diferentes status
             // Medicamentos sem registro aparecerão como "PERDIDOS"
             
             // Paracetamol 08:00 - Tomado no horário

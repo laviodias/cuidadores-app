@@ -67,14 +67,14 @@
 
         </LinearLayout>
 
-        <!-- Indicador de Status -->
-        <View
-            android:id="@+id/viewStatusIndicator"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+        <!-- Tag de Status -->
+        <com.example.cuidadores.ui.view.TagView
+            android:id="@+id/tagStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:background="@drawable/circle_background"
-            android:visibility="visible" />
+            app:tagType="gray"
+            app:tagText="Status" />
 
     </LinearLayout>
 

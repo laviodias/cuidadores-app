@@ -14,7 +14,8 @@ import com.example.cuidadores.ui.model.AplicacaoComStatus
 import com.example.cuidadores.databinding.ItemPacienteDiaBinding
 
 class PacienteDiaAdapter(
-    private val onMedicamentoClick: (AplicacaoComStatus) -> Unit = {}
+    private val onMedicamentoClick: (AplicacaoComStatus) -> Unit = {},
+    private val onClienteIconClick: (Long) -> Unit = {}
 ) : ListAdapter<PacienteDia, PacienteDiaAdapter.PacienteDiaViewHolder>(PacienteDiaDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PacienteDiaViewHolder {
@@ -52,6 +53,15 @@ class PacienteDiaAdapter(
                 // Configurar click listener para expansão
                 layoutCabecalho.setOnClickListener { // Id do LinearLayout que contem o conteúdo do card colapsado
                     toggleExpansion(position)
+                }
+
+                // Configurar click listener para o ícone do paciente
+                textInicial.setOnClickListener {
+                    onClienteIconClick(pacienteDia.cliente.id)
+                }
+
+                textNomePaciente.setOnClickListener {
+                    onClienteIconClick(pacienteDia.cliente.id)
                 }
             }
         }

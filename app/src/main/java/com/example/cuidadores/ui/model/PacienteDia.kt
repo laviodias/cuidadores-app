@@ -70,23 +70,28 @@ data class AplicacaoComStatus(
     companion object {
         // Status específico para UI - aplicações de hoje sem registro
         const val STATUS_PENDENTE_UI = "PENDENTE"
+        // Status específico para UI - aplicações futuras sem registro
+        const val STATUS_FUTURO_UI = "FUTURO"
     }
     
     /**
      * Status da aplicação baseado na data de referência e registro
      * - Se tem registro: usa o status do registro 
-     * - Se não tem registro E é hoje: PENDENTE
-     * - Se não tem registro E é dia passado: PERDIDO
+     * - Se não tem registro E é hoje: PENDENTE (clicável)
+     * - Se não tem registro E é dia passado: PERDIDO (clicável)
+     * - Se não tem registro E é dia futuro: FUTURO (não clicável)
      */
     val status: String
         get() = if (registro != null) {
             registro.status
         } else {
-            val hoje = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE)
-            if (dataReferencia == hoje) {
-                STATUS_PENDENTE_UI // Status UI para aplicações de hoje sem registro
-            } else {
-                RegistroAplicacao.STATUS_PERDIDO
+            val hoje = java.time.LocalDate.now()
+            val dataRef = java.time.LocalDate.parse(dataReferencia)
+            
+            when {
+                dataRef.isEqual(hoje) -> STATUS_PENDENTE_UI // Hoje sem registro = PENDENTE
+                dataRef.isBefore(hoje) -> RegistroAplicacao.STATUS_PERDIDO // Passado sem registro = PERDIDO
+                else -> STATUS_FUTURO_UI // Futuro sem registro = FUTURO
             }
         }
     
@@ -125,4 +130,10 @@ data class AplicacaoComStatus(
      */
     val isPendente: Boolean
         get() = status == STATUS_PENDENTE_UI
+    
+    /**
+     * Verifica se a aplicação é futura (sem registro em data futura)
+     */
+    val isFutura: Boolean
+        get() = status == STATUS_FUTURO_UI
 } 
