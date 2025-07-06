@@ -7,11 +7,14 @@ import com.example.cuidadores.data.model.Medicamento
 @Dao
 interface MedicamentoDao {
     
-    @Query("SELECT * FROM medicamentos ORDER BY data_inicio DESC")
+    @Query("SELECT * FROM medicamentos ORDER BY nome ASC")
     fun getAllMedicamentos(): LiveData<List<Medicamento>>
     
-    @Query("SELECT * FROM medicamentos WHERE cliente_id = :clienteId ORDER BY data_inicio DESC")
+    @Query("SELECT * FROM medicamentos WHERE cliente_id = :clienteId ORDER BY nome ASC")
     fun getMedicamentosByCliente(clienteId: Long): LiveData<List<Medicamento>>
+    
+    @Query("SELECT * FROM medicamentos WHERE cliente_id = :clienteId ORDER BY nome ASC")
+    fun getMedicamentosByClienteId(clienteId: Long): LiveData<List<Medicamento>>
     
     @Query("SELECT * FROM medicamentos WHERE id = :id")
     suspend fun getMedicamentoById(id: Long): Medicamento?
@@ -32,4 +35,7 @@ interface MedicamentoDao {
     
     @Delete
     suspend fun delete(medicamento: Medicamento)
+    
+    @Query("DELETE FROM medicamentos WHERE cliente_id = :clienteId")
+    suspend fun deleteMedicamentosByClienteId(clienteId: Long)
 } 

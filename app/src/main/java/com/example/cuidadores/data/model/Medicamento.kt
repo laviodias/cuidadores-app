@@ -3,6 +3,7 @@ package com.example.cuidadores.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -14,7 +15,8 @@ import androidx.room.PrimaryKey
             childColumns = ["cliente_id"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index("cliente_id")]
 )
 data class Medicamento(
     @PrimaryKey(autoGenerate = true)
@@ -34,5 +36,7 @@ data class Medicamento(
     val dataFim: String?, // Ex: "2024-01-22" (nullable - tratamento contínuo)
     
     @ColumnInfo(name = "observacoes_gerais")
-    val observacoesGerais: String? // Ex: "Tomar sempre com água"
+    val observacoesGerais: String?, // Ex: "Tomar sempre com água"
+    
+    val horario: String // Ex: "08:00"
 ) 

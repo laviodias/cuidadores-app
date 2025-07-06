@@ -55,8 +55,8 @@ class ClienteViewModel(application: Application) : AndroidViewModel(application)
         clienteRepository.delete(cliente)
     }
 
-    fun getClienteById(id: Long) = viewModelScope.launch {
-        clienteRepository.getClienteById(id)
+    suspend fun getClienteById(id: Long): Cliente? {
+        return clienteRepository.getClienteById(id)
     }
 
     /**
@@ -343,80 +343,6 @@ class ClienteViewModel(application: Application) : AndroidViewModel(application)
                         {"diaSemana": "Quinta", "horarioInicio": "13:00", "horarioFim": "17:00"},
                         {"diaSemana": "Domingo", "horarioInicio": "08:00", "horarioFim": "12:00"}
                     ]"""
-                )
-            )
-            
-            // 3. Criar medicamentos
-            val paracetamolId = medicamentoRepository.insert(
-                Medicamento(
-                    clienteId = clienteId,
-                    nome = "Paracetamol",
-                    dosagem = "500mg",
-                    dataInicio = hoje,
-                    dataFim = null,
-                    observacoesGerais = "Tomar sempre com água"
-                )
-            )
-            
-            val omeprazolId = medicamentoRepository.insert(
-                Medicamento(
-                    clienteId = clienteId,
-                    nome = "Omeprazol",
-                    dosagem = "20mg",
-                    dataInicio = hoje,
-                    dataFim = null,
-                    observacoesGerais = "Tomar em jejum"
-                )
-            )
-            
-            // 4. Criar aplicações da receita
-            val aplicacao1Id = aplicacaoRepository.insertAplicacaoReceita(
-                AplicacaoReceita(
-                    medicamentoId = paracetamolId,
-                    horario = "08:00",
-                    observacoes = "Após o café da manhã"
-                )
-            )
-            
-            val aplicacao2Id = aplicacaoRepository.insertAplicacaoReceita(
-                AplicacaoReceita(
-                    medicamentoId = paracetamolId,
-                    horario = "14:00",
-                    observacoes = "Após o almoço"
-                )
-            )
-            
-            val aplicacao3Id = aplicacaoRepository.insertAplicacaoReceita(
-                AplicacaoReceita(
-                    medicamentoId = omeprazolId,
-                    horario = "07:30",
-                    observacoes = "30 minutos antes do café"
-                )
-            )
-            
-            // 5. Criar apenas ALGUNS registros para demonstrar diferentes status
-            // Medicamentos sem registro aparecerão como "PERDIDOS"
-            
-            // Paracetamol 08:00 - Tomado no horário
-            aplicacaoRepository.insertRegistro(
-                RegistroAplicacao(
-                    aplicacaoReceitaId = aplicacao1Id,
-                    dataAplicacao = hoje,
-                    status = RegistroAplicacao.STATUS_CONCLUIDO,
-                    horarioConcluido = "${hoje}T08:05:00"
-                )
-            )
-            
-            // Paracetamol 14:00 - Não tem registro, aparecerá como PERDIDO
-            // (não criamos registro propositalmente)
-            
-            // Omeprazol 07:30 - Tomado com atraso
-            aplicacaoRepository.insertRegistro(
-                RegistroAplicacao(
-                    aplicacaoReceitaId = aplicacao3Id,
-                    dataAplicacao = hoje,
-                    status = RegistroAplicacao.STATUS_ATRASADO,
-                    horarioConcluido = "${hoje}T12:00:00" // 4h30 depois
                 )
             )
             

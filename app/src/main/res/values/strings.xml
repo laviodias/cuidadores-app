@@ -16,4 +16,6 @@
     <string name="title_medicamentos_cliente">Medicações do Dia</string>
     <string name="horarios_nao_definidos">Horários não definidos</string>
     <string name="text_sem_aplicacoes">Sem aplicações registradas para essa data</string>
+
+    <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
 </resources>

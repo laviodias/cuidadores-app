@@ -20,7 +20,7 @@ import com.example.cuidadores.data.model.RegistroAplicacao
         AplicacaoReceita::class,
         RegistroAplicacao::class
     ], 
-    version = 2, // Incrementada de 1 para 2
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -39,9 +39,8 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "cuidadores_database"
-                )
-                    .fallbackToDestructiveMigration() // Recria banco se versão mudar
-                    .build()
+                ).fallbackToDestructiveMigration()
+                .build()
                 INSTANCE = instance
                 instance
             }

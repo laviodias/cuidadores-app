@@ -33,4 +33,12 @@ class MedicamentoRepository(private val medicamentoDao: MedicamentoDao) {
     suspend fun delete(medicamento: Medicamento) {
         medicamentoDao.delete(medicamento)
     }
+
+    fun getMedicamentosByClienteId(clienteId: Long): LiveData<List<Medicamento>> {
+        return medicamentoDao.getMedicamentosByClienteId(clienteId)
+    }
+
+    suspend fun deleteMedicamentosByClienteId(clienteId: Long) {
+        medicamentoDao.deleteMedicamentosByClienteId(clienteId)
+    }
 } 
