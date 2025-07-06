@@ -10,10 +10,10 @@ data class Cliente(
     val nome: String,
     val telefone: String,
     val endereco: String,
-    val horariosAtendimento: String // Armazenado como texto JSON
+    val horariosAtendimento: String // JSON para horários de atendimento
 )
 
-// Classes auxiliares para representar os dados estruturados
+// Classe auxiliar para horários de atendimento
 data class HorarioAtendimento(
     val diaSemana: String,
     val horarioInicio: String,

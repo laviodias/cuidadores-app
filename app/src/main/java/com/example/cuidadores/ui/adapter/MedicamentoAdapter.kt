@@ -34,8 +34,8 @@ class MedicamentoAdapter(
             binding.textViewDosagem.text = "Dosagem: ${medicamento.dosagem}"
             binding.textViewHorario.text = "Horário: ${medicamento.horario}"
             
-            if (medicamento.observacoes.isNotEmpty()) {
-                binding.textViewObservacoes.text = "Observações: ${medicamento.observacoes}"
+            if (!medicamento.observacoesGerais.isNullOrEmpty()) {
+                binding.textViewObservacoes.text = "Observações: ${medicamento.observacoesGerais}"
                 binding.textViewObservacoes.visibility = android.view.View.VISIBLE
             } else {
                 binding.textViewObservacoes.visibility = android.view.View.GONE

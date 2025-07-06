@@ -74,6 +74,7 @@ class CadastroClienteFragment : Fragment() {
             nome = binding.editNome.text.toString(),
             telefone = binding.editTelefone.text.toString(),
             endereco = binding.editEndereco.text.toString(),
+            // medicamentos = binding.editMedicamentos.text.toString(),
             horariosAtendimento = binding.editHorariosAtendimento.text.toString()
         )
 

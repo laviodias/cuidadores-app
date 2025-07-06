@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="6dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Card do Cliente -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardCliente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp" 
+            android:paddingVertical="18dp">
+            
+
+            <!-- Cabeçalho do Card -->
+            <LinearLayout
+                android:id="@+id/layoutCabecalho"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Inicial do Nome em Círculo -->
+                <TextView
+                    android:id="@+id/textInicial"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="J"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- Nome e Subtítulo -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textNomePaciente"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="João Silva"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:textColor="?android:attr/textColorPrimary" />
+
+                    <TextView
+                        android:id="@+id/textTelefone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="(71) 99999-9999"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textEndereco"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Rua das Flores, 123"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary" />
+
+            <com.example.cuidadores.ui.view.TagView
+                android:id="@+id/textHorariosAtendimento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:tagType="blue"
+                app:tagText="Segunda a Sexta-feira, 08:00 - 18:00" />
+
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Calendario Semanal -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/calendarioSemanal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp">
+
+         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp" 
+            android:paddingVertical="18dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp" 
+                android:paddingVertical="12dp">
+
+                <ImageView
+                    android:id="@+id/iconChevronLeft"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_left"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Semana anterior" />
+
+                <TextView
+                    android:id="@+id/textMesCalendarioSemanal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Junho 2025"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="?android:attr/textColorPrimary" />
+
+                 <ImageView
+                    android:id="@+id/iconChevronRight"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chevron_right"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Próxima semana" />
+
+            </LinearLayout>
+
+             <!-- Linha Divisória -->
+            <View
+                android:id="@+id/viewDivisor"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorOnSurface"
+                android:alpha="0.25"
+                android:layout_marginBottom="12dp" />
+            
+            <LinearLayout
+                android:id="@+id/containerDias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="6dp">
+
+                <include
+                    layout="@layout/item_calendario_semanal"
+                    android:id="@+id/dia1"
+                    android:layout_marginHorizontal="3dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <include
+                    layout="@layout/item_calendario_semanal"
+                    android:id="@+id/dia2"
+                    android:layout_marginHorizontal="3dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <include
+                    layout="@layout/item_calendario_semanal"
+                    android:id="@+id/dia3"
+                    android:layout_marginHorizontal="3dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <include
+                    layout="@layout/item_calendario_semanal"
+                    android:id="@+id/dia4"
+                    android:layout_marginHorizontal="3dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <include
+                    layout="@layout/item_calendario_semanal"
+                    android:id="@+id/dia5"
+                    android:layout_marginHorizontal="3dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+            
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/textTitleMedicamentosDia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/title_medicamentos_cliente"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textStyle="bold"
+        android:textColor="?android:attr/textColorPrimary" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewMedicamentosDia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"/>
+
+    <!-- Mensagem quando não há medicamentos -->
+    <TextView
+        android:id="@+id/textEmptyState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="64dp"
+        android:gravity="center"
+        android:text="@string/text_sem_aplicacoes"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="?android:attr/textColorSecondary"
+        android:drawableTop="@drawable/ic_pill_24dp"
+        android:drawablePadding="16dp" 
+        android:visibility="gone" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

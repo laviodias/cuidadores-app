@@ -8,4 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="color_bottom_nav_selected">#636AE8</color>
+    <color name="color_calendario_semanal_dia_background">#5AF7F7F7</color>
+    <color name="color_calendario_semanal_dia_background_selected">#dddcfc</color>
+    
+    <!-- Cores do texto das tags -->
+    <color name="tag_text_green">#15803D</color>
+    <color name="tag_text_blue">#1E40AF</color>
+    <color name="tag_text_red">#DC2626</color>
+    <color name="tag_text_orange">#803315</color>
+    <color name="tag_text_gray">#6B7280</color>
 </resources>

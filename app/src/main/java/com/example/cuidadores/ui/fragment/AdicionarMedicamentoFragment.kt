@@ -44,6 +44,7 @@ class AdicionarMedicamentoFragment : Fragment() {
         }
 
         setupButtons()
+        setupDefaultValues()
     }
 
     private fun setupButtons() {
@@ -56,11 +57,62 @@ class AdicionarMedicamentoFragment : Fragment() {
         }
     }
 
+    private fun setupDefaultValues() {
+        // Preencher data de início com a data atual
+        val hoje = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE)
+        binding.editTextDataInicio.setText(hoje)
+        
+        // Configurar DatePickers
+        setupDatePickers()
+    }
+    
+    private fun setupDatePickers() {
+        binding.editTextDataInicio.setOnClickListener {
+            showDatePicker(binding.editTextDataInicio, "Data de Início")
+        }
+        
+        binding.editTextDataFim.setOnClickListener {
+            showDatePicker(binding.editTextDataFim, "Data de Fim")
+        }
+    }
+    
+    private fun showDatePicker(editText: com.google.android.material.textfield.TextInputEditText, title: String) {
+        val calendar = java.util.Calendar.getInstance()
+        
+        // Se já tem uma data, usar ela como inicial
+        val currentText = editText.text.toString()
+        if (currentText.isNotEmpty()) {
+            try {
+                val date = java.time.LocalDate.parse(currentText)
+                calendar.set(date.year, date.monthValue - 1, date.dayOfMonth)
+            } catch (e: Exception) {
+                // Se não conseguir parsear, usar data atual
+            }
+        }
+        
+        val datePickerDialog = android.app.DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                val selectedDate = java.time.LocalDate.of(year, month + 1, dayOfMonth)
+                val formattedDate = selectedDate.format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE)
+                editText.setText(formattedDate)
+            },
+            calendar.get(java.util.Calendar.YEAR),
+            calendar.get(java.util.Calendar.MONTH),
+            calendar.get(java.util.Calendar.DAY_OF_MONTH)
+        )
+        
+        datePickerDialog.setTitle(title)
+        datePickerDialog.show()
+    }
+
     private fun salvarMedicamento() {
         val nome = binding.editTextNomeMedicamento.text.toString().trim()
         val dosagem = binding.editTextDosagem.text.toString().trim()
         val horario = binding.editTextHorario.text.toString().trim()
-        val observacoes = binding.editTextObservacoes.text.toString().trim()
+        val dataInicio = binding.editTextDataInicio.text.toString().trim()
+        val dataFim = binding.editTextDataFim.text.toString().trim()
+        val observacoesGerais = binding.editTextObservacoes.text.toString().trim()
 
         // Validação dos campos obrigatórios
         if (nome.isEmpty()) {
@@ -78,13 +130,20 @@ class AdicionarMedicamentoFragment : Fragment() {
             return
         }
 
+        if (dataInicio.isEmpty()) {
+            binding.editTextDataInicio.error = "Data de início é obrigatória"
+            return
+        }
+
         // Criar o medicamento
         val medicamento = Medicamento(
             clienteId = clienteId,
             nome = nome,
             dosagem = dosagem,
-            horario = horario,
-            observacoes = observacoes
+            dataInicio = dataInicio,
+            dataFim = if (dataFim.isEmpty()) null else dataFim,
+            observacoesGerais = observacoesGerais,
+            horario = horario
         )
 
         // Salvar no banco de dados
