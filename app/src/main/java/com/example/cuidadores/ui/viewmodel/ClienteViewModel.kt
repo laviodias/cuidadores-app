@@ -346,6 +346,67 @@ class ClienteViewModel(application: Application) : AndroidViewModel(application)
                 )
             )
             
+            // 3. Criar medicamentos de exemplo para Maria Silva
+            val medicamentoId1 = medicamentoRepository.insert(
+                Medicamento(
+                    clienteId = clienteId,
+                    nome = "Paracetamol",
+                    dosagem = "500mg",
+                    dataInicio = hoje,
+                    dataFim = null,
+                    observacoesGerais = "Tomar com água",
+                    horario = "08:00"
+                )
+            )
+            
+            val medicamentoId2 = medicamentoRepository.insert(
+                Medicamento(
+                    clienteId = clienteId,
+                    nome = "Vitamina D",
+                    dosagem = "1000 UI",
+                    dataInicio = hoje,
+                    dataFim = null,
+                    observacoesGerais = "Tomar após o café da manhã",
+                    horario = "12:00"
+                )
+            )
+            
+            // 4. Criar medicamento de exemplo para João Santos
+            val medicamentoId3 = medicamentoRepository.insert(
+                Medicamento(
+                    clienteId = clienteId2,
+                    nome = "Omeprazol",
+                    dosagem = "20mg",
+                    dataInicio = hoje,
+                    dataFim = null,
+                    observacoesGerais = "Tomar em jejum",
+                    horario = "07:00"
+                )
+            )
+            
+            // 5. Criar aplicações de receita para os medicamentos
+            val aplicacao1 = AplicacaoReceita(
+                medicamentoId = medicamentoId1,
+                horario = "08:00",
+                observacoes = "Tomar com água"
+            )
+            
+            val aplicacao2 = AplicacaoReceita(
+                medicamentoId = medicamentoId2,
+                horario = "12:00",
+                observacoes = "Tomar após o café da manhã"
+            )
+            
+            val aplicacao3 = AplicacaoReceita(
+                medicamentoId = medicamentoId3,
+                horario = "07:00",
+                observacoes = "Tomar em jejum"
+            )
+            
+            aplicacaoRepository.insertAplicacaoReceita(aplicacao1)
+            aplicacaoRepository.insertAplicacaoReceita(aplicacao2)
+            aplicacaoRepository.insertAplicacaoReceita(aplicacao3)
+            
         } catch (e: Exception) {
             // Log erro se necessário
         }
