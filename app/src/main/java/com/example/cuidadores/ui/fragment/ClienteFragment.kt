@@ -17,8 +17,6 @@ import com.example.cuidadores.ui.adapter.MedicamentoDiaAdapter
 import com.example.cuidadores.ui.model.MedicamentoAplicacao
 import com.example.cuidadores.data.model.HorarioAtendimento
 import com.example.cuidadores.ui.view.TagView
-import org.json.JSONArray
-import org.json.JSONException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -148,62 +146,48 @@ class ClienteFragment : Fragment() {
         binding.apply {
             textNomePaciente.text = cliente.nome
             textTelefone.text = cliente.telefone
-            textHorariosAtendimento.setText(
-                formatHorariosAtendimento(cliente.horariosAtendimento),
-                TagView.TagType.BLUE
-            )
             textEndereco.text = cliente.endereco
             textInicial.text = cliente.nome.firstOrNull()?.toString()?.uppercase() ?: "?"
+        }
+        
+        // Carregar horários de atendimento do cliente
+        viewModel.getHorariosByCliente(cliente.id).observe(viewLifecycleOwner) { horarios ->
+            val horariosFormatados = formatHorariosAtendimento(horarios)
+            binding.textHorariosAtendimento.setText(horariosFormatados, TagView.TagType.BLUE)
         }
     }
 
     /**
-     * Converte o JSON de horários de atendimento para formato legível
+     * Converte a lista de horários de atendimento para formato legível
      * Agrupa horários iguais de forma inteligente
      */
-    private fun formatHorariosAtendimento(horariosJson: String): String {
-        try {
-            val jsonArray = JSONArray(horariosJson)
-            val horarios = mutableListOf<HorarioAtendimento>()
-            
-            // Parsear JSON para objetos HorarioAtendimento
-            for (i in 0 until jsonArray.length()) {
-                val jsonObject = jsonArray.getJSONObject(i)
-                horarios.add(
-                    HorarioAtendimento(
-                        diaSemana = jsonObject.getString("diaSemana"),
-                        horarioInicio = jsonObject.getString("horarioInicio"),
-                        horarioFim = jsonObject.getString("horarioFim")
-                    )
-                )
-            }
-            
-            // Agrupar horários iguais
-            val gruposHorarios = horarios.groupBy { "${it.horarioInicio}-${it.horarioFim}" }
-            
-            // Formatar cada grupo, ordenando por horário
-            val grupos = gruposHorarios.toList().sortedBy { (horario, _) ->
-                val inicio = horario.split("-")[0]
-                inicio.replace(":", "").toIntOrNull() ?: 0
-            }.map { (horario, dias) ->
-                val diasOrdenados = ordenarDiasSemana(dias.map { it.diaSemana })
-                val diasFormatados = formatarDiasConsecutivos(diasOrdenados)
-                val horarioFormatado = formatarHorario(horario)
-                "$diasFormatados $horarioFormatado"
-            }
-            
-            return grupos.joinToString("\n")
-            
-        } catch (e: JSONException) {
+    private fun formatHorariosAtendimento(horarios: List<HorarioAtendimento>): String {
+        if (horarios.isEmpty()) {
             return getString(R.string.horarios_nao_definidos)
         }
+        
+        // Agrupar horários iguais
+        val gruposHorarios = horarios.groupBy { "${it.horarioInicio}-${it.horarioFim}" }
+        
+        // Formatar cada grupo, ordenando por horário
+        val grupos = gruposHorarios.toList().sortedBy { (horario, _) ->
+            val inicio = horario.split("-")[0]
+            inicio.replace(":", "").toIntOrNull() ?: 0
+        }.map { (horario, dias) ->
+            val diasOrdenados = ordenarDiasSemana(dias.map { it.diaSemana })
+            val diasFormatados = formatarDiasConsecutivos(diasOrdenados)
+            val horarioFormatado = formatarHorario(horario)
+            "$diasFormatados $horarioFormatado"
+        }
+        
+        return grupos.joinToString("\n")
     }
 
     /**
      * Ordena os dias da semana na ordem correta
      */
     private fun ordenarDiasSemana(dias: List<String>): List<String> {
-        val ordemDias = listOf("Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo")
+        val ordemDias = listOf("Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo")
         return dias.sortedBy { ordemDias.indexOf(it) }
     }
 
@@ -216,7 +200,7 @@ class ClienteFragment : Fragment() {
         if (dias.isEmpty()) return ""
         if (dias.size == 1) return dias.first()
         
-        val ordemDias = listOf("Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo")
+        val ordemDias = listOf("Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo")
         val indices = dias.map { ordemDias.indexOf(it) }.sorted()
         
         val grupos = mutableListOf<List<Int>>()
@@ -399,7 +383,10 @@ class ClienteFragment : Fragment() {
             }
         }
         
-        viewModel.getMedicamentosClientePorData(clienteId, dateString).observe(viewLifecycleOwner, currentMedicamentosObserver!!)
+        // Verificar se clienteId é válido antes de chamar o método
+        if (clienteId != -1L) {
+            viewModel.getMedicamentosClientePorData(clienteId, dateString).observe(viewLifecycleOwner, currentMedicamentosObserver!!)
+        }
     }
     
     /**

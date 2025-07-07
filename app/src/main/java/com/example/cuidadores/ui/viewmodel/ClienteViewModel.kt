@@ -12,12 +12,14 @@ import com.example.cuidadores.data.model.Cliente
 import com.example.cuidadores.data.model.Medicamento
 import com.example.cuidadores.data.model.AplicacaoReceita
 import com.example.cuidadores.data.model.RegistroAplicacao
+import com.example.cuidadores.data.model.HorarioAtendimento
 import com.example.cuidadores.ui.model.PacienteDia
 import com.example.cuidadores.ui.model.AplicacaoComStatus
 import com.example.cuidadores.ui.model.MedicamentoAplicacao
 import com.example.cuidadores.data.repository.ClienteRepository
 import com.example.cuidadores.data.repository.MedicamentoRepository
 import com.example.cuidadores.data.repository.AplicacaoRepository
+import com.example.cuidadores.data.repository.HorarioAtendimentoRepository
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -28,6 +30,7 @@ class ClienteViewModel(application: Application) : AndroidViewModel(application)
     private val clienteRepository: ClienteRepository
     private val medicamentoRepository: MedicamentoRepository
     private val aplicacaoRepository: AplicacaoRepository
+    private val horarioAtendimentoRepository: HorarioAtendimentoRepository
     
     val allClientes: LiveData<List<Cliente>>
 
@@ -39,6 +42,7 @@ class ClienteViewModel(application: Application) : AndroidViewModel(application)
             database.aplicacaoReceitaDao(),
             database.registroAplicacaoDao()
         )
+        horarioAtendimentoRepository = HorarioAtendimentoRepository(database.horarioAtendimentoDao())
         
         allClientes = clienteRepository.allClientes
     }
@@ -255,6 +259,57 @@ class ClienteViewModel(application: Application) : AndroidViewModel(application)
         return medicamentoRepository.getMedicamentosByCliente(clienteId)
     }
     
+    // === Métodos para gerenciar horários de atendimento ===
+    
+    fun insertHorarioAtendimento(horarioAtendimento: HorarioAtendimento) = viewModelScope.launch {
+        horarioAtendimentoRepository.insert(horarioAtendimento)
+    }
+    
+    fun updateHorarioAtendimento(horarioAtendimento: HorarioAtendimento) = viewModelScope.launch {
+        horarioAtendimentoRepository.update(horarioAtendimento)
+    }
+    
+    fun deleteHorarioAtendimento(horarioAtendimento: HorarioAtendimento) = viewModelScope.launch {
+        horarioAtendimentoRepository.delete(horarioAtendimento)
+    }
+    
+    fun getHorariosByCliente(clienteId: Long): LiveData<List<HorarioAtendimento>> {
+        return horarioAtendimentoRepository.getHorariosByCliente(clienteId)
+    }
+    
+    /**
+     * Salva cliente e seus horários de atendimento em uma única operação
+     * Primeiro salva o cliente, depois os horários com o ID correto
+     */
+    fun salvarClienteComHorarios(cliente: Cliente, horarios: List<HorarioAtendimento>) = viewModelScope.launch {
+        // 1. Salvar cliente e obter o ID
+        val clienteId = clienteRepository.insert(cliente)
+        
+        // 2. Salvar horários com o clienteId correto
+        if (horarios.isNotEmpty()) {
+            val horariosComId = horarios.map { it.copy(clienteId = clienteId) }
+            horarioAtendimentoRepository.insertAll(horariosComId)
+        }
+    }
+    
+    /**
+     * Atualiza cliente e seus horários de atendimento
+     * Primeiro atualiza o cliente, depois remove horários antigos e salva os novos
+     */
+    fun atualizarClienteComHorarios(cliente: Cliente, horarios: List<HorarioAtendimento>) = viewModelScope.launch {
+        // 1. Atualizar cliente
+        clienteRepository.update(cliente)
+        
+        // 2. Remover horários antigos
+        horarioAtendimentoRepository.deleteHorariosByCliente(cliente.id)
+        
+        // 3. Salvar novos horários
+        if (horarios.isNotEmpty()) {
+            val horariosComId = horarios.map { it.copy(clienteId = cliente.id) }
+            horarioAtendimentoRepository.insertAll(horariosComId)
+        }
+    }
+    
     /**
      * Retorna medicamentos de um cliente específico para uma data específica
      * Usado na tela individual do cliente
@@ -312,39 +367,45 @@ class ClienteViewModel(application: Application) : AndroidViewModel(application)
             val hoje = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
             
             // 1. Criar cliente de exemplo - Maria Silva
-            // Resultado formatado: "Segunda a Quinta 08h às 17h30\nSexta 08h30 às 12h\nSábado 09h15 às 15h45"
             val clienteId = clienteRepository.insert(
                 Cliente(
                     nome = "Maria Silva",
                     telefone = "(11) 98765-4321",
-                    endereco = "Rua das Flores, 123",
-                    horariosAtendimento = """[
-                        {"diaSemana": "Segunda", "horarioInicio": "08:00", "horarioFim": "17:30"},
-                        {"diaSemana": "Terça", "horarioInicio": "08:00", "horarioFim": "17:30"},
-                        {"diaSemana": "Quarta", "horarioInicio": "08:00", "horarioFim": "17:30"},
-                        {"diaSemana": "Quinta", "horarioInicio": "08:00", "horarioFim": "17:30"},
-                        {"diaSemana": "Sexta", "horarioInicio": "08:30", "horarioFim": "12:00"},
-                        {"diaSemana": "Sábado", "horarioInicio": "09:15", "horarioFim": "15:45"}
-                    ]"""
+                    endereco = "Rua das Flores, 123"
                 )
             )
             
             // 2. Criar segundo cliente de exemplo - João Santos
-            // Resultado formatado: "Segunda e Quinta 07h30 às 11h30\nSegunda e Quinta 13h às 17h\nDomingo 08h às 12h"
             val clienteId2 = clienteRepository.insert(
                 Cliente(
                     nome = "João Santos",
                     telefone = "(11) 98888-7777",
-                    endereco = "Av. Paulista, 456",
-                    horariosAtendimento = """[
-                        {"diaSemana": "Segunda", "horarioInicio": "07:30", "horarioFim": "11:30"},
-                        {"diaSemana": "Segunda", "horarioInicio": "13:00", "horarioFim": "17:00"},
-                        {"diaSemana": "Quinta", "horarioInicio": "07:30", "horarioFim": "11:30"},
-                        {"diaSemana": "Quinta", "horarioInicio": "13:00", "horarioFim": "17:00"},
-                        {"diaSemana": "Domingo", "horarioInicio": "08:00", "horarioFim": "12:00"}
-                    ]"""
+                    endereco = "Av. Paulista, 456"
                 )
             )
+            
+            // 3. Criar horários de atendimento para Maria Silva
+            val horariosMaria = listOf(
+                HorarioAtendimento(clienteId = clienteId, diaSemana = "Segunda-feira", horarioInicio = "08:00", horarioFim = "17:30"),
+                HorarioAtendimento(clienteId = clienteId, diaSemana = "Terça-feira", horarioInicio = "08:00", horarioFim = "17:30"),
+                HorarioAtendimento(clienteId = clienteId, diaSemana = "Quarta-feira", horarioInicio = "08:00", horarioFim = "17:30"),
+                HorarioAtendimento(clienteId = clienteId, diaSemana = "Quinta-feira", horarioInicio = "08:00", horarioFim = "17:30"),
+                HorarioAtendimento(clienteId = clienteId, diaSemana = "Sexta-feira", horarioInicio = "08:30", horarioFim = "12:00"),
+                HorarioAtendimento(clienteId = clienteId, diaSemana = "Sábado", horarioInicio = "09:15", horarioFim = "15:45")
+            )
+            
+            horarioAtendimentoRepository.insertAll(horariosMaria.toList())
+            
+            // 4. Criar horários de atendimento para João Santos
+            val horariosJoao = listOf(
+                HorarioAtendimento(clienteId = clienteId2, diaSemana = "Segunda-feira", horarioInicio = "07:30", horarioFim = "11:30"),
+                HorarioAtendimento(clienteId = clienteId2, diaSemana = "Segunda-feira", horarioInicio = "13:00", horarioFim = "17:00"),
+                HorarioAtendimento(clienteId = clienteId2, diaSemana = "Quinta-feira", horarioInicio = "07:30", horarioFim = "11:30"),
+                HorarioAtendimento(clienteId = clienteId2, diaSemana = "Quinta-feira", horarioInicio = "13:00", horarioFim = "17:00"),
+                HorarioAtendimento(clienteId = clienteId2, diaSemana = "Domingo", horarioInicio = "08:00", horarioFim = "12:00")
+            )
+            
+            horarioAtendimentoRepository.insertAll(horariosJoao.toList())
             
             // 3. Criar medicamentos de exemplo para Maria Silva
             val medicamentoId1 = medicamentoRepository.insert(

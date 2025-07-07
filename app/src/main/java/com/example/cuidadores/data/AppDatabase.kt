@@ -8,19 +8,22 @@ import com.example.cuidadores.data.dao.ClienteDao
 import com.example.cuidadores.data.dao.MedicamentoDao
 import com.example.cuidadores.data.dao.AplicacaoReceitaDao
 import com.example.cuidadores.data.dao.RegistroAplicacaoDao
+import com.example.cuidadores.data.dao.HorarioAtendimentoDao
 import com.example.cuidadores.data.model.Cliente
 import com.example.cuidadores.data.model.Medicamento
 import com.example.cuidadores.data.model.AplicacaoReceita
 import com.example.cuidadores.data.model.RegistroAplicacao
+import com.example.cuidadores.data.model.HorarioAtendimento
 
 @Database(
     entities = [
         Cliente::class,
         Medicamento::class,
         AplicacaoReceita::class,
-        RegistroAplicacao::class
+        RegistroAplicacao::class,
+        HorarioAtendimento::class
     ], 
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -28,6 +31,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun medicamentoDao(): MedicamentoDao
     abstract fun aplicacaoReceitaDao(): AplicacaoReceitaDao
     abstract fun registroAplicacaoDao(): RegistroAplicacaoDao
+    abstract fun horarioAtendimentoDao(): HorarioAtendimentoDao
 
     companion object {
         @Volatile
