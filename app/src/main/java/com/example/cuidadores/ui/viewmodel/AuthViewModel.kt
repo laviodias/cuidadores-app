@@ -21,6 +21,9 @@ class AuthViewModel(
     private val _registerState = MutableLiveData<RegisterState>()
     val registerState: LiveData<RegisterState> = _registerState
     
+    private val _updateProfileState = MutableLiveData<UpdateProfileState>()
+    val updateProfileState: LiveData<UpdateProfileState> = _updateProfileState
+    
     private val _isLoggedIn = MutableLiveData<Boolean>()
     val isLoggedIn: LiveData<Boolean> = _isLoggedIn
     
@@ -100,6 +103,72 @@ class AuthViewModel(
         }
     }
     
+    fun atualizarPerfil(nome: String, email: String, senhaAtual: String, novaSenha: String, confirmarNovaSenha: String) {
+        if (nome.isBlank() || email.isBlank()) {
+            _updateProfileState.value = UpdateProfileState.Error("Nome e email são obrigatórios")
+            return
+        }
+        
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            _updateProfileState.value = UpdateProfileState.Error("Email inválido")
+            return
+        }
+        
+        // Validar senha se estiver tentando alterar
+        if (novaSenha.isNotBlank() || confirmarNovaSenha.isNotBlank()) {
+            if (senhaAtual.isBlank()) {
+                _updateProfileState.value = UpdateProfileState.Error("Senha atual é obrigatória para alterar a senha")
+                return
+            }
+            
+            if (novaSenha.isBlank()) {
+                _updateProfileState.value = UpdateProfileState.Error("Nova senha é obrigatória")
+                return
+            }
+            
+            if (novaSenha != confirmarNovaSenha) {
+                _updateProfileState.value = UpdateProfileState.Error("Senhas não coincidem")
+                return
+            }
+            
+            if (novaSenha.length < 6) {
+                _updateProfileState.value = UpdateProfileState.Error("Nova senha deve ter pelo menos 6 caracteres")
+                return
+            }
+        }
+        
+        val currentUser = _currentUser.value
+        if (currentUser == null) {
+            _updateProfileState.value = UpdateProfileState.Error("Usuário não encontrado")
+            return
+        }
+        
+        _updateProfileState.value = UpdateProfileState.Loading
+        
+        viewModelScope.launch {
+            val usuarioAtualizado = currentUser.copy(
+                nome = nome.trim(),
+                email = email.trim()
+            )
+            
+            val novaSenhaFinal = if (novaSenha.isBlank()) null else novaSenha
+            val senhaAtualFinal = if (senhaAtual.isBlank()) null else senhaAtual
+            
+            val resultado = authRepository.atualizarPerfil(usuarioAtualizado, senhaAtualFinal, novaSenhaFinal)
+            resultado.fold(
+                onSuccess = { usuario ->
+                    // Atualizar sessão com novos dados
+                    sessionManager.criarSessao(usuario.id, usuario.email, usuario.nome)
+                    _currentUser.value = usuario
+                    _updateProfileState.value = UpdateProfileState.Success(usuario)
+                },
+                onFailure = { exception ->
+                    _updateProfileState.value = UpdateProfileState.Error(exception.message ?: "Erro ao atualizar perfil")
+                }
+            )
+        }
+    }
+    
     fun logout() {
         sessionManager.logout()
         _currentUser.value = null
@@ -154,6 +223,13 @@ class AuthViewModel(
         object Loading : RegisterState()
         data class Success(val usuario: Usuario) : RegisterState()
         data class Error(val message: String) : RegisterState()
+    }
+
+    sealed class UpdateProfileState {
+        object Idle : UpdateProfileState()
+        object Loading : UpdateProfileState()
+        data class Success(val usuario: Usuario) : UpdateProfileState()
+        data class Error(val message: String) : UpdateProfileState()
     }
 }
 

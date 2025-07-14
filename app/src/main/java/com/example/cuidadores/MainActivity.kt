@@ -55,7 +55,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, // ID do item "Início" no menu
                 R.id.navigation_patients, // ID do item "Pacientes" no menu
                 R.id.loginFragment, // Incluir login para não mostrar botão de voltar
-                R.id.registerFragment // Incluir cadastro para não mostrar botão de voltar
+                R.id.registerFragment, // Incluir cadastro para não mostrar botão de voltar
+                R.id.perfilFragment // Incluir perfil para não mostrar botão de voltar
             )
         )
 
@@ -136,6 +137,7 @@ class MainActivity : AppCompatActivity() {
             // Controlar visibilidade da bottom navigation baseado na tela atual
             val showBottomNav = when (destination.id) {
                 R.id.loginFragment, R.id.registerFragment -> false
+                R.id.perfilFragment -> true // Mostrar bottom nav na tela de perfil
                 else -> authViewModel.isLoggedIn.value ?: false
             }
             binding.bottomNavBar.visibility = if (showBottomNav) View.VISIBLE else View.GONE
@@ -165,6 +167,13 @@ class MainActivity : AppCompatActivity() {
     
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.action_perfil -> {
+                val navHostFragment = supportFragmentManager
+                    .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                val navController = navHostFragment.navController
+                navController.navigate(R.id.perfilFragment)
+                true
+            }
             R.id.action_logout -> {
                 authViewModel.logout()
                 // A navegação será feita automaticamente pelo observer em AuthViewModel

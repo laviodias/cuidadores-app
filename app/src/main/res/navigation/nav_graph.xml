@@ -62,6 +62,11 @@
     </fragment>
 
     <fragment
+        android:id="@+id/perfilFragment"
+        android:name="com.example.cuidadores.ui.fragment.PerfilFragment"
+        android:label="Perfil" />
+
+    <fragment
         android:id="@+id/cadastroClienteFragment"
         android:name="com.example.cuidadores.ui.fragment.CadastroClienteFragment"
         android:label="Cadastro de Cliente" />
