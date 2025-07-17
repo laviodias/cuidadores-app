@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="@color/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:padding="32dp">
 
         <!-- Título -->
         <TextView
@@ -18,7 +19,7 @@
             android:text="Meu Perfil"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="@color/primary_dark"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +31,7 @@
             android:layout_height="wrap_content"
             android:text="Edite suas informações pessoais"
             android:textSize="16sp"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="@color/on_background"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@id/tvPerfilTitle"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +86,7 @@
             android:text="Alterar Senha"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="@color/primary_dark"
             android:layout_marginTop="32dp"
             app:layout_constraintTop_toBottomOf="@id/tilEmail"
             app:layout_constraintStart_toStartOf="parent" />
@@ -96,7 +97,7 @@
             android:layout_height="wrap_content"
             android:text="Deixe em branco se não quiser alterar a senha"
             android:textSize="14sp"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="@color/on_surface"
             android:layout_marginTop="4dp"
             app:layout_constraintTop_toBottomOf="@id/tvSenhaSection"
             app:layout_constraintStart_toStartOf="parent"
@@ -175,6 +176,7 @@
             android:text="Salvar Alterações"
             android:textSize="16sp"
             android:padding="16dp"
+            app:backgroundTint="@color/primary"
             app:layout_constraintTop_toBottomOf="@id/tilConfirmarNovaSenha"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -199,6 +201,7 @@
             android:textSize="16sp"
             android:padding="16dp"
             style="@style/Widget.Material3.Button.TextButton"
+            app:backgroundTint="@color/secondary"
             app:layout_constraintTop_toBottomOf="@id/btnSalvar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -209,7 +212,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="24dp"
-            android:background="?android:attr/dividerHorizontal"
+            android:background="@color/divider"
             app:layout_constraintTop_toBottomOf="@id/btnCancelar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -222,7 +225,7 @@
             android:text="Informações da Conta"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="@color/primary_dark"
             app:layout_constraintTop_toBottomOf="@id/dividerInfo"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -233,7 +236,7 @@
             android:layout_marginTop="8dp"
             android:text="Conta criada em: -"
             android:textSize="14sp"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="@color/on_surface"
             app:layout_constraintTop_toBottomOf="@id/tvInfoConta"
             app:layout_constraintStart_toStartOf="parent" />
 

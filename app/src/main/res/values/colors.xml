@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <color name="primary_light">#E3F9F6</color>
+    <color name="primary">#4FC3F7</color> <!-- Azul claro -->
+    <color name="primary_dark">#0288D1</color>
+    <color name="secondary">#81C784</color> <!-- Verde claro -->
+    <color name="secondary_dark">#388E3C</color>
+    <color name="background">#FAFAFA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="on_background">#222222</color>
+    <color name="on_surface">#222222</color>
+    <color name="divider">#E0E0E0</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="color_bottom_nav_selected">#636AE8</color>
-    <color name="color_calendario_semanal_dia_background">#5AF7F7F7</color>
-    <color name="color_calendario_semanal_dia_background_selected">#dddcfc</color>
-    
+    <color name="color_bottom_nav_selected">#4FC3F7</color>
+    <color name="color_calendario_semanal_dia_background">#E3F9F6</color>
+    <color name="color_calendario_semanal_dia_background_selected">#B3E5FC</color>
     <!-- Cores do texto das tags -->
     <color name="tag_text_green">#15803D</color>
     <color name="tag_text_blue">#1E40AF</color>

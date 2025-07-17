@@ -3,14 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="6dp">
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/tvHomeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seu dia"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary_dark"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/tvHomeSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Veja os pacientes e medicações programadas para hoje"
+            android:textSize="16sp"
+            android:textColor="@color/on_background"
+            android:layout_marginBottom="16dp" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="96dp"
         android:clipToPadding="false"
-        android:padding="8dp" />
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="16dp" />
 
     <!-- Mensagem quando não há medicamentos -->
     <TextView
@@ -20,9 +48,9 @@
         android:layout_gravity="center"
         android:layout_margin="32dp"
         android:gravity="center"
-        android:text="Nenhuma aplicação programada para hoje"
+        android:text="Nenhuma aplicação programada para hoje! Aproveite para descansar."
         android:textAppearance="?attr/textAppearanceHeadline6"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="@color/secondary_dark"
         android:drawableTop="@drawable/ic_pill_24dp"
         android:drawablePadding="16dp"
         android:visibility="gone" />

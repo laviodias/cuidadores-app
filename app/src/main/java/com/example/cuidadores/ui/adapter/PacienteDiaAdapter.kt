@@ -102,8 +102,6 @@ class PacienteDiaAdapter(
                 if (isExpanded) {
                     // Estado expandido
                     imageChevron.setImageResource(R.drawable.ic_chevron_up_24dp)
-                    viewDivisor.visibility = View.VISIBLE
-                    
                     if (animate) {
                         animateRecyclerViewExpansion(recyclerMedicamentos, true)
                     } else {
@@ -112,8 +110,6 @@ class PacienteDiaAdapter(
                 } else {
                     // Estado colapsado
                     imageChevron.setImageResource(R.drawable.ic_chevron_down_24dp)
-                    viewDivisor.visibility = View.GONE
-                    
                     if (animate) {
                         animateRecyclerViewExpansion(recyclerMedicamentos, false)
                     } else {

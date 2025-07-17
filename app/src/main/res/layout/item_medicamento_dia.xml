@@ -3,16 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="4dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="4dp"
+    app:strokeColor="@color/primary_light"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp"
+        android:padding="18dp"
         android:gravity="center_vertical">
 
         <!-- Ícone de Pílula -->
@@ -20,10 +22,10 @@
             android:id="@+id/imagePilula"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/ic_pill_24dp"
             android:contentDescription="Medicamento"
-            app:tint="?attr/colorPrimary" />
+            app:tint="@color/primary" />
 
         <!-- Informações do Medicamento -->
         <LinearLayout
@@ -38,9 +40,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Paracetamol"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textStyle="bold" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_dark" />
 
             <!-- Dose e Horário -->
             <TextView
@@ -49,8 +51,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="500mg às 08:00"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="15sp"
+                android:textColor="@color/on_background"
                 android:textStyle="bold" />
 
             <!-- Instruções -->
@@ -60,8 +62,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Tomar com água, preferencialmente após as refeições"
-                android:textAppearance="?attr/textAppearanceCaption"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="13sp"
+                android:textColor="@color/on_surface"
                 android:maxLines="2"
                 android:ellipsize="end" />
 
@@ -72,7 +74,7 @@
             android:id="@+id/tagStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="12dp"
             app:tagType="gray"
             app:tagText="Status" />
 
