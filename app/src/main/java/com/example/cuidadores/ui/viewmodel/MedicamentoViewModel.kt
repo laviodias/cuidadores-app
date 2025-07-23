@@ -38,4 +38,8 @@ class MedicamentoViewModel(application: Application) : AndroidViewModel(applicat
     fun deleteMedicamentosByClienteId(clienteId: Long) = viewModelScope.launch {
         repository.deleteMedicamentosByClienteId(clienteId)
     }
+
+    suspend fun insertAndReturnId(medicamento: Medicamento): Long {
+        return repository.insert(medicamento)
+    }
 } 

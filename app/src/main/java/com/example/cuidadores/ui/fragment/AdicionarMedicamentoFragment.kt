@@ -12,12 +12,19 @@ import com.example.cuidadores.databinding.FragmentAdicionarMedicamentoBinding
 import com.example.cuidadores.ui.viewmodel.MedicamentoViewModel
 import androidx.navigation.fragment.findNavController
 import com.example.cuidadores.R
+import com.example.cuidadores.data.model.AplicacaoReceita
+import com.example.cuidadores.ui.viewmodel.ClienteViewModel
+import androidx.fragment.app.viewModels
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AdicionarMedicamentoFragment : Fragment() {
 
     private var _binding: FragmentAdicionarMedicamentoBinding? = null
     private val binding get() = _binding!!
     private val medicamentoViewModel: MedicamentoViewModel by activityViewModels()
+    private val clienteViewModel: ClienteViewModel by viewModels()
     private var clienteId: Long = 0
 
     override fun onCreateView(
@@ -146,11 +153,20 @@ class AdicionarMedicamentoFragment : Fragment() {
             horario = horario
         )
 
-        // Salvar no banco de dados
-        medicamentoViewModel.insert(medicamento)
-
-        Toast.makeText(context, "Medicamento adicionado com sucesso!", Toast.LENGTH_SHORT).show()
-        findNavController().navigateUp()
+        // Salvar no banco de dados e criar aplicação de receita
+        CoroutineScope(Dispatchers.IO).launch {
+            val medicamentoId = medicamentoViewModel.insertAndReturnId(medicamento)
+            val aplicacao = AplicacaoReceita(
+                medicamentoId = medicamentoId,
+                horario = horario,
+                observacoes = observacoesGerais
+            )
+            clienteViewModel.insertAplicacaoReceita(aplicacao)
+            launch(Dispatchers.Main) {
+                Toast.makeText(requireContext(), "Medicamento adicionado com sucesso!", Toast.LENGTH_SHORT).show()
+                findNavController().navigateUp()
+            }
+        }
     }
 
     override fun onDestroyView() {
