@@ -18,6 +18,12 @@ import com.example.cuidadores.util.SessionManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.NavController
+import android.os.Build
+import android.content.pm.PackageManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,9 +37,49 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
+        // Pedido de permissão de notificação (Android 13+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                android.util.Log.d("MainActivity", "Solicitando permissão de notificação")
+                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
+            } else {
+                android.util.Log.d("MainActivity", "Permissão de notificação já concedida")
+            }
+        }
+
+        // Teste: disparar notificação simples ao abrir o app
+        sendTestNotification()
+
         setupAuthViewModel()
         setupNavigation()
         observeAuthState()
+    }
+
+    private fun sendTestNotification() {
+        val channelId = "test_channel"
+        val notificationId = 12345
+        val title = "Notificação de Teste"
+        val text = "Se você está vendo isso, as notificações funcionam!"
+
+        val manager = getSystemService(NotificationManager::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Notificações de Teste",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            manager.createNotificationChannel(channel)
+        }
+
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_pill_24dp)
+            .setContentTitle(title)
+            .setContentText(text)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .build()
+
+        NotificationManagerCompat.from(this).notify(notificationId, notification)
     }
     
     private fun setupAuthViewModel() {

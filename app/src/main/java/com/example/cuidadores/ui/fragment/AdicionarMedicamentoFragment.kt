@@ -18,6 +18,13 @@ import androidx.fragment.app.viewModels
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.cuidadores.notification.MedicamentoReminderWorker
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class AdicionarMedicamentoFragment : Fragment() {
 
@@ -162,6 +169,33 @@ class AdicionarMedicamentoFragment : Fragment() {
                 observacoes = observacoesGerais
             )
             clienteViewModel.insertAplicacaoReceita(aplicacao)
+
+            // Buscar nome do paciente
+            val paciente = clienteViewModel.getClienteById(clienteId)
+            val pacienteNome = paciente?.nome ?: "Paciente"
+
+            // Agendar o Worker para o próximo horário
+            val now = LocalTime.now()
+            val horarioAplicacao = LocalTime.parse(horario, DateTimeFormatter.ofPattern("HH:mm"))
+            val delayMillis = if (now.isBefore(horarioAplicacao)) {
+                java.time.Duration.between(now, horarioAplicacao).toMillis()
+            } else {
+                java.time.Duration.between(now, horarioAplicacao.plusHours(24)).toMillis()
+            }
+            val dataFim = medicamento.dataFim
+            val workData = Data.Builder()
+                .putLong(MedicamentoReminderWorker.KEY_MEDICAMENTO_ID, medicamentoId)
+                .putString(MedicamentoReminderWorker.KEY_PACIENTE_NOME, pacienteNome)
+                .putString(MedicamentoReminderWorker.KEY_MEDICAMENTO_NOME, nome)
+                .putString(MedicamentoReminderWorker.KEY_HORARIO, horario)
+                .putString(MedicamentoReminderWorker.KEY_DATA_FIM, dataFim)
+                .build()
+            val workRequest = OneTimeWorkRequestBuilder<MedicamentoReminderWorker>()
+                .setInitialDelay(delayMillis, java.util.concurrent.TimeUnit.MILLISECONDS)
+                .setInputData(workData)
+                .build()
+            WorkManager.getInstance(requireContext()).enqueue(workRequest)
+
             launch(Dispatchers.Main) {
                 Toast.makeText(requireContext(), "Medicamento adicionado com sucesso!", Toast.LENGTH_SHORT).show()
                 findNavController().navigateUp()
