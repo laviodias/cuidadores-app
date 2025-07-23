@@ -17,9 +17,11 @@
         <item name="android:divider">@color/divider</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Fonte Nunito -->
-        <item name="android:fontFamily">@font/nunito</item>
-        <item name="fontFamily">@font/nunito</item>
+        <!-- Fonte Inter para conteúdo geral -->
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
+        <!-- Fonte Archivo para App Bar -->
+        <item name="actionBarStyle">@style/Widget.Cuidadores.ActionBar</item>
         <!-- Customize your theme here. -->
     </style>
 
@@ -31,4 +33,59 @@
     <style name="Theme.Cuidadores.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Cuidadores.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- Estilo para App Bar com fonte Archivo -->
+    <style name="Theme.Cuidadores.AppBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:fontFamily">@font/archivo</item>
+        <item name="fontFamily">@font/archivo</item>
+        <item name="android:textAppearance">@style/TextAppearance.Cuidadores.AppBar</item>
+    </style>
+
+    <!-- Estilo para Headers e Títulos de Seção -->
+    <style name="TextAppearance.Cuidadores.Header" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:fontFamily">@font/archivo</item>
+        <item name="fontFamily">@font/archivo</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <!-- Estilo para App Bar -->
+    <style name="TextAppearance.Cuidadores.AppBar" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:fontFamily">@font/archivo</item>
+        <item name="fontFamily">@font/archivo</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!-- Estilo para Nomes de Pacientes -->
+    <style name="TextAppearance.Cuidadores.PatientName" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:fontFamily">@font/archivo</item>
+        <item name="fontFamily">@font/archivo</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!-- Estilo para Títulos de Seção -->
+    <style name="TextAppearance.Cuidadores.SectionTitle" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:fontFamily">@font/archivo</item>
+        <item name="fontFamily">@font/archivo</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <!-- Estilo para ActionBar -->
+    <style name="Widget.Cuidadores.ActionBar" parent="Widget.MaterialComponents.ActionBar.Primary">
+        <item name="titleTextAppearance">@style/TextAppearance.Cuidadores.AppBar</item>
+        <item name="android:titleTextAppearance">@style/TextAppearance.Cuidadores.AppBar</item>
+    </style>
+
+    <!-- Estilo para TextInputLayout Arredondado -->
+    <style name="Widget.Cuidadores.TextInputLayout.Rounded" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="boxStrokeColor">@color/primary</item>
+        <item name="hintTextColor">@color/primary</item>
+    </style>
 </resources>

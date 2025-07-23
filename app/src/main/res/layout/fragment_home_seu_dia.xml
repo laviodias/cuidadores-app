@@ -16,8 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Seu dia"
-            android:textSize="28sp"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.Cuidadores.Header"
             android:textColor="@color/primary_dark"
             android:layout_marginBottom="4dp" />
 

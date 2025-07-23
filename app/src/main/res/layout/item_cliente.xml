@@ -19,10 +19,8 @@
             android:id="@+id/textNome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="@color/primary_dark"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textAppearance="@style/TextAppearance.Cuidadores.PatientName"
+            android:textColor="@color/primary_dark" />
 
         <TextView
             android:id="@+id/textTelefone"
@@ -64,7 +62,8 @@
                 android:layout_height="wrap_content"
                 android:text="Excluir"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:strokeColor="@color/secondary_dark" />
+                app:strokeColor="@color/tag_text_red" 
+                android:textColor="@color/tag_text_red"/>
 
         </LinearLayout>
 

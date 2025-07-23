@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                style="@style/Widget.Cuidadores.TextInputLayout.Rounded">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextNomeMedicamento"
@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                style="@style/Widget.Cuidadores.TextInputLayout.Rounded">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextDosagem"
@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                style="@style/Widget.Cuidadores.TextInputLayout.Rounded">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextHorario"
@@ -84,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                style="@style/Widget.Cuidadores.TextInputLayout.Rounded">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextDataInicio"
@@ -100,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                style="@style/Widget.Cuidadores.TextInputLayout.Rounded">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextDataFim"
@@ -116,7 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                style="@style/Widget.Cuidadores.TextInputLayout.Rounded">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextObservacoes"

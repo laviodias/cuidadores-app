@@ -17,6 +17,7 @@
     <color name="color_bottom_nav_selected">#4FC3F7</color>
     <color name="color_calendario_semanal_dia_background">#E3F9F6</color>
     <color name="color_calendario_semanal_dia_background_selected">#B3E5FC</color>
+    <color name="color_tag_background_red">#FEF2F2</color>
     <!-- Cores do texto das tags -->
     <color name="tag_text_green">#15803D</color>
     <color name="tag_text_blue">#1E40AF</color>

@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Paracetamol"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/primary_dark" />
 
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="500mg às 08:00"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textColor="@color/on_background"
                 android:textStyle="bold" />
 
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Tomar com água, preferencialmente após as refeições"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:textColor="@color/on_surface"
                 android:maxLines="2"
                 android:ellipsize="end" />
